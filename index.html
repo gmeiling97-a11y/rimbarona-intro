@@ -1,367 +1,140 @@
-<!DOCTYPE html>
+from pathlib import Path
+import base64, mimetypes
+img_path = Path("/mnt/data/a_vibrant_3d_cartoon_fantasy_forest_scene_in_a_bri.png")
+html_path = Path("/mnt/data/rimbarona_intro_3d_animated.html")
+img_b64 = base64.b64encode(img_path.read_bytes()).decode("ascii")
+html = f'''<!DOCTYPE html>
 <html lang="ms">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pentaksiran Berterusan | BMMB 6033</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      min-height: 100vh;
-      overflow: hidden;
-      font-family: "Trebuchet MS", Arial, sans-serif;
-      color: white;
-    }
-
-    .forest {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      isolation: isolate;
-      background:
-        radial-gradient(ellipse at 50% 35%,
-          rgba(255, 232, 151, .9) 0%,
-          rgba(255, 207, 113, .4) 16%,
-          transparent 42%),
-        linear-gradient(180deg,
-          #76c9c5 0%,
-          #a8dba7 36%,
-          #4e9b66 68%,
-          #174b3b 100%);
-      animation: breathe 12s ease-in-out infinite alternate;
-    }
-
-    .sunlight {
-      position: absolute;
-      inset: -30%;
-      z-index: -1;
-      pointer-events: none;
-      background: repeating-conic-gradient(
-        from 10deg at 50% 25%,
-        transparent 0deg 9deg,
-        rgba(255, 244, 190, .12) 10deg 12deg,
-        transparent 13deg 22deg
-      );
-      animation: lightmove 18s linear infinite;
-    }
-
-    .hill {
-      position: absolute;
-      bottom: -12%;
-      width: 120%;
-      height: 48%;
-      left: -10%;
-      border-radius: 50% 50% 0 0;
-      background: linear-gradient(#70b96b, #26734f);
-      z-index: -1;
-    }
-
-    .hill.back {
-      bottom: 3%;
-      left: -35%;
-      height: 38%;
-      background: linear-gradient(#8dce83, #40885a);
-      transform: rotate(-8deg);
-    }
-
-    .tree {
-      position: absolute;
-      bottom: 7%;
-      font-size: clamp(100px, 18vw, 240px);
-      filter: drop-shadow(0 12px 8px #173f3450);
-      z-index: -1;
-      animation: sway 5s ease-in-out infinite alternate;
-      user-select: none;
-    }
-
-    .tree.left { left: -3%; }
-    .tree.right {
-      right: -3%;
-      animation-delay: -2s;
-    }
-
-    .tree.small {
-      font-size: clamp(65px, 11vw, 140px);
-      bottom: 3%;
-      opacity: .9;
-    }
-
-    .tree.left-small { left: 18%; }
-    .tree.right-small { right: 17%; }
-
-    .content {
-      position: relative;
-      z-index: 5;
-      width: min(90%, 760px);
-      padding: 42px 24px;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,.45);
-      border-radius: 32px;
-      background: rgba(20, 73, 54, .28);
-      box-shadow:
-        0 20px 60px rgba(12, 47, 35, .2),
-        inset 0 0 35px rgba(255,255,255,.08);
-      backdrop-filter: blur(5px);
-      animation: appear 1.3s ease-out both;
-    }
-
-    .eyebrow {
-      font-size: clamp(12px, 2vw, 16px);
-      font-weight: 800;
-      letter-spacing: .25em;
-      color: #fff4c5;
-      margin-bottom: 18px;
-      text-shadow: 0 2px 8px #174b3b;
-    }
-
-    h1 {
-      font-size: clamp(29px, 6vw, 58px);
-      line-height: 1.15;
-      font-weight: 900;
-      text-shadow: 0 4px 0 #306b4b, 0 8px 20px #174b3b80;
-    }
-
-    .course {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 9px 24px;
-      border: 1px solid #fff5d0;
-      border-radius: 50px;
-      color: #fff8dc;
-      background: rgba(20, 66, 48, .4);
-      font-weight: bold;
-      letter-spacing: .16em;
-    }
-
-    .intro {
-      max-width: 450px;
-      margin: 24px auto 30px;
-      color: #fffbe9;
-      font-size: 15px;
-      line-height: 1.7;
-      text-shadow: 0 2px 6px #194b39;
-    }
-
-    .start {
-      position: relative;
-      border: 0;
-      border-radius: 18px;
-      padding: 17px 56px;
-      color: #24513a;
-      background: linear-gradient(
-        180deg, #fff4b0 0%, #ffd66c 55%, #f2ad42 100%
-      );
-      box-shadow:
-        0 8px 0 #b9782e,
-        0 13px 24px #163e2f66,
-        inset 0 3px 2px #fffbe0;
-      font-size: 20px;
-      font-weight: 900;
-      letter-spacing: .14em;
-      cursor: pointer;
-      transition: transform .18s, box-shadow .18s;
-      animation: pulse 2.2s ease-in-out infinite;
-    }
-
-    .start:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 0 #b9782e, 0 18px 30px #163e2f66;
-    }
-
-    .start:active {
-      transform: translateY(5px);
-      box-shadow: 0 3px 0 #b9782e;
-    }
-
-    .hint {
-      margin-top: 25px;
-      font-size: 12px;
-      letter-spacing: .12em;
-      color: #fff5d5;
-    }
-
-    .particle {
-      position: absolute;
-      top: -12%;
-      z-index: 2;
-      pointer-events: none;
-      user-select: none;
-      animation: fall linear infinite;
-      filter: drop-shadow(0 0 6px #fff5a0);
-    }
-
-    .butterfly {
-      position: absolute;
-      z-index: 3;
-      font-size: 30px;
-      animation: fly 12s ease-in-out infinite alternate;
-      filter: drop-shadow(0 3px 5px #174b3b55);
-      pointer-events: none;
-    }
-
-    .butterfly.one { top: 18%; left: 10%; }
-    .butterfly.two {
-      top: 70%;
-      right: 12%;
-      animation-delay: -5s;
-    }
-
-    .mist {
-      position: absolute;
-      bottom: 12%;
-      width: 45%;
-      height: 65px;
-      border-radius: 50%;
-      background: rgba(238, 255, 220, .18);
-      filter: blur(24px);
-      animation: drift 9s ease-in-out infinite alternate;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .mist.one { left: -10%; }
-    .mist.two {
-      right: -10%;
-      bottom: 28%;
-      animation-delay: -4s;
-    }
-
-    @keyframes fall {
-      from { transform: translate3d(0, -10vh, 0) rotate(0); }
-      to { transform: translate3d(100px, 115vh, 0) rotate(600deg); }
-    }
-
-    @keyframes fly {
-      0% { transform: translate(0, 0) rotate(-8deg); }
-      50% { transform: translate(65px, -30px) rotate(12deg); }
-      100% { transform: translate(-20px, 35px) rotate(-5deg); }
-    }
-
-    @keyframes sway {
-      from { transform: rotate(-2deg); }
-      to { transform: rotate(2deg); }
-    }
-
-    @keyframes breathe {
-      from { background-size: 100% 100%; }
-      to { background-size: 110% 110%; }
-    }
-
-    @keyframes lightmove {
-      from { transform: rotate(0deg) scale(1); }
-      to { transform: rotate(12deg) scale(1.08); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { filter: brightness(1); }
-      50% { filter: brightness(1.08); }
-    }
-
-    @keyframes drift {
-      from { transform: translateX(-15px); opacity: .4; }
-      to { transform: translateX(50px); opacity: .8; }
-    }
-
-    @keyframes appear {
-      from { opacity: 0; transform: translateY(20px) scale(.97); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    @media (max-width: 600px) {
-      .content { padding: 35px 18px; }
-      .tree.left { left: -22%; }
-      .tree.right { right: -22%; }
-      .tree.left-small { left: 3%; }
-      .tree.right-small { right: 3%; }
-      .intro { font-size: 14px; }
-      .start { padding: 15px 42px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RimbaRona | Pentaksiran Berterusan BMMB 6033</title>
+<style>
+  * {{ box-sizing: border-box; }}
+  html, body {{ margin: 0; width: 100%; height: 100%; overflow: hidden; background: #173f31; }}
+  body {{ font-family: system-ui, sans-serif; }}
+  .scene {{
+    position: relative; width: 100vw; height: 100vh; overflow: hidden;
+    isolation: isolate; background: #285b43;
+  }}
+  .scene-art {{
+    position: absolute; inset: -1.8%;
+    width: 103.6%; height: 103.6%; object-fit: fill;
+    transform-origin: center;
+    animation: gentle-3d 12s ease-in-out infinite alternate;
+    filter: saturate(1.04);
+    user-select: none; pointer-events: none;
+  }}
+  /* Only invisible interaction area: the MULA button is already part of the artwork.
+     This avoids creating a second visible button on top of it. */
+  .start-hitbox {{
+    position: absolute;
+    left: 36.2%; top: 56.3%; width: 29.5%; height: 16.2%;
+    border: 0; border-radius: 999px; background: transparent;
+    cursor: pointer; z-index: 5; padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }}
+  .start-hitbox:focus-visible {{
+    outline: 3px solid rgba(255,255,255,.95);
+    outline-offset: 4px;
+  }}
+  .start-hitbox:active {{ transform: scale(.97); }}
+  .glow {{
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(115deg, transparent 25%, rgba(255,255,220,.12) 48%, transparent 68%);
+    transform: translateX(-120%);
+    animation: sunlight 9s ease-in-out infinite;
+    mix-blend-mode: screen;
+  }}
+  .sparkle {{
+    position: absolute; z-index: 2; pointer-events: none;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: #fff5a6; box-shadow: 0 0 7px 3px rgba(255,239,139,.55);
+    animation: twinkle var(--duration, 3s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }}
+  .leaf {{
+    position: absolute; z-index: 2; top: -8vh; pointer-events: none;
+    font-size: clamp(12px, 1.8vw, 24px); opacity: .85;
+    filter: drop-shadow(0 2px 3px rgba(20,70,40,.25));
+    animation: leaf-fall var(--duration, 10s) linear infinite;
+    animation-delay: var(--delay, 0s);
+  }}
+  .status {{
+    position: absolute; left: 50%; bottom: 2.2%; transform: translateX(-50%);
+    z-index: 6; color: rgba(255,255,255,.92); font-size: 12px; letter-spacing: .04em;
+    text-shadow: 0 1px 5px rgba(0,0,0,.55); text-align: center;
+    opacity: 0; transition: opacity .25s; pointer-events: none;
+    white-space: nowrap;
+  }}
+  .status.show {{ opacity: 1; }}
+  @keyframes gentle-3d {{
+    0% {{ transform: perspective(1200px) scale(1.015) rotateX(.15deg) translate3d(-.2%, .1%, 0); }}
+    50% {{ transform: perspective(1200px) scale(1.035) rotateX(-.15deg) translate3d(.15%, -.15%, 0); }}
+    100% {{ transform: perspective(1200px) scale(1.02) rotateX(.1deg) translate3d(.2%, .1%, 0); }}
+  }}
+  @keyframes sunlight {{
+    0%, 15% {{ transform: translateX(-120%); opacity: 0; }}
+    30% {{ opacity: .8; }}
+    65%, 100% {{ transform: translateX(120%); opacity: 0; }}
+  }}
+  @keyframes twinkle {{
+    0%, 100% {{ opacity: .15; transform: scale(.6); }}
+    50% {{ opacity: .95; transform: scale(1.35); }}
+  }}
+  @keyframes leaf-fall {{
+    0% {{ transform: translate3d(0, -5vh, 0) rotate(0deg); }}
+    50% {{ transform: translate3d(35px, 50vh, 0) rotate(180deg); }}
+    100% {{ transform: translate3d(-20px, 110vh, 0) rotate(360deg); }}
+  }}
+  @media (prefers-reduced-motion: reduce) {{
+    .scene-art, .glow, .sparkle, .leaf {{ animation: none !important; }}
+  }}
+</style>
 </head>
-
 <body>
-  <main class="forest">
-    <div class="sunlight"></div>
-    <div class="hill back"></div>
-    <div class="hill"></div>
-
-    <div class="tree left">🌳</div>
-    <div class="tree right">🌳</div>
-    <div class="tree small left-small">🌲</div>
-    <div class="tree small right-small">🌲</div>
-
-    <div class="mist one"></div>
-    <div class="mist two"></div>
-
-    <div class="butterfly one">🦋</div>
-    <div class="butterfly two">🦋</div>
-
-    <section class="content">
-      <p class="eyebrow">PENTAKSIRAN BERTERUSAN</p>
-      <h1>Selamat Datang<br>ke Dunia Alam!</h1>
-      <p class="course">BMMB 6033</p>
-
-      <p class="intro">
-        Bersedia untuk meneroka dunia bahasa yang penuh
-        imaginasi, warna dan pengembaraan.
-      </p>
-
-      <button class="start" id="startButton">
-        MULA <span aria-hidden="true">➜</span>
-      </button>
-
-      <p class="hint" id="hint">
-        TEKAN MULA UNTUK MEMULAKAN PENGEMBARAAN
-      </p>
-    </section>
-  </main>
-
-  <script>
-    // Menghasilkan daun dan kelip-kelip secara automatik.
-    const forest = document.querySelector(".forest");
-    const symbols = ["🍃", "🍂", "✦", "✨", "•"];
-
-    for (let i = 0; i < 36; i++) {
-      const particle = document.createElement("span");
-      particle.className = "particle";
-      particle.textContent =
-        symbols[Math.floor(Math.random() * symbols.length)];
-
-      particle.style.left = Math.random() * 100 + "%";
-      particle.style.animationDuration = (7 + Math.random() * 13) + "s";
-      particle.style.animationDelay = (-Math.random() * 18) + "s";
-      particle.style.fontSize = (10 + Math.random() * 17) + "px";
-      particle.style.opacity = (0.35 + Math.random() * 0.65);
-
-      if (particle.textContent === "•") {
-        particle.style.color = "#fff6a1";
-        particle.style.textShadow = "0 0 12px #fff5a0";
-      }
-
-      forest.appendChild(particle);
-    }
-
-    // Halaman kedua boleh ditambah kemudian.
-    document.getElementById("startButton").addEventListener("click", () => {
-      window.location.href = "pengenalan.html";
-    });
-  </script>
+<main class="scene" aria-label="Halaman pembukaan RimbaRona">
+  <img class="scene-art" alt="Hutan fantasi 3D dengan papan Pentaksiran Berterusan, BMMB 6033 dan butang Mula"
+       src="data:image/png;base64,{img_b64}">
+  <div class="glow"></div>
+  <div id="particles" aria-hidden="true"></div>
+  <button class="start-hitbox" id="start" aria-label="Mula pengembaraan RimbaRona" title="MULA"></button>
+  <div class="status" id="status" role="status">Halaman pengenalan akan disambungkan di sini.</div>
+</main>
+<script>
+  const particles = document.getElementById('particles');
+  // Subtle sparkle points only; no extra butterflies or extra visible buttons.
+  const sparklePositions = [
+    [8,18],[19,35],[28,13],[73,19],[89,29],[82,56],[13,68],[30,83],
+    [69,85],[91,72],[56,18],[45,78],[7,48],[94,12]
+  ];
+  sparklePositions.forEach(([x,y], i) => {{
+    const s = document.createElement('span');
+    s.className = 'sparkle';
+    s.style.left = x + '%'; s.style.top = y + '%';
+    s.style.setProperty('--duration', (2.2 + (i % 4) * .55) + 's');
+    s.style.setProperty('--delay', (-i * .37) + 's');
+    particles.appendChild(s);
+  }});
+  // A few small falling leaves add motion without duplicating the main artwork.
+  ['🍃','🍂','🍃','🍂'].forEach((symbol, i) => {{
+    const leaf = document.createElement('span');
+    leaf.className = 'leaf'; leaf.textContent = symbol;
+    leaf.style.left = (15 + i * 21) + '%';
+    leaf.style.setProperty('--duration', (11 + i * 2.3) + 's');
+    leaf.style.setProperty('--delay', (-i * 3.2) + 's');
+    particles.appendChild(leaf);
+  }});
+  document.getElementById('start').addEventListener('click', () => {{
+    // Page 2 will be added later. For now, avoid a broken 404 link.
+    const status = document.getElementById('status');
+    status.classList.add('show');
+    status.textContent = 'RimbaRona sedia untuk diteruskan ke halaman seterusnya!';
+    window.setTimeout(() => status.classList.remove('show'), 2600);
+  }});
+</script>
 </body>
-</html>
+</html>'''
+html_path.write_text(html, encoding="utf-8")
+print(f"Created {html_path} ({html_path.stat().st_size:,} bytes)")
+
